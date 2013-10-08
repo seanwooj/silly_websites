@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>stupid_scroller day 1</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+		$( function () {
+			var scroller_width = $(".scroller").width();
+
+			var create_div = function(){
+				var $div = $("<div/>");
+				$div.addClass("building");
+				return $div;
+			}
+
+			var insert_image = function($div){
+				var $img = randomize_image( $( "<img/>" ) );
+				$div.append($img);
+				return $div;
+			}
+
+			var randomize_speed = function($div) {
+				var random_speed = Math.random() * 5;
+				$div.data("speed", random_speed);
+				// also setting z-index here;
+				var zindex = parseInt(random_speed);
+				$div.css({"z-index": zindex});
+				return $div;
+			}
+
+			var append_div_to_dom = function($div){
+				var div_width;
+				$scroller = $(".scroller");
+				$scroller.append($div);
+				div_width = $div.width();
+				$div.css({"left" : "-" + div_width + "px"});
+			}
+
+			var randomize_image = function($img) {
+				// this is where you have to change the number of buildings
+				var random_int = Math.floor( Math.random() * 9 );
+				$img.attr("src", "buildings/" + random_int + ".png");
+				return $img;
+			}
+
+			var random_building_to_dom = function(){
+				var $div = create_div();
+				$div = randomize_speed(insert_image($div));
+				append_div_to_dom($div);
+			}
+
+			var loop = function(){
+				setInterval(function(){
+					$(".building").each( function(index, building){
+						var $building = $(building)
+						move_building($building);
+						if( parseInt($building.css("left")) > scroller_width) {
+							$building.remove();
+							random_building_to_dom();
+						}
+					});
+				}, 100);
+			}
+
+			var move_building = function($building) {
+				var animate_speed = $building.data("speed");
+				$building.animate({
+					"left": "+=" + animate_speed + "px"
+				}, 100);
+			}
+
+			for (var i = 0; i < 4; i++) {
+				random_building_to_dom();
+			}
+
+			loop();
+		});
+
+		
+	</script>
+
+	<style>
+		body {
+			background: #78CFF5;
+		}
+		.scroller {
+			width: 400px;
+			height: 400px;
+			position: relative;
+		}
+
+		.building {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			z-index: 1;
+		}
+
+		.ground {
+			background: #444;
+			width: 400px;
+			height: 100px;
+			position: relative;
+			top: -20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="scroller">
+
+	</div>
+	<div class="ground">
+
+	</div>
+</body>
+</html>

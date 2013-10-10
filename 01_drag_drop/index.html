@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>drag and drop ui</title>
+	<script src="http://codeorigin.jquery.com/jquery-2.0.3.js"></script>
+	<script>
+		var drag_drop = ( function( $ ) {
+			var // functions
+				initialize, 
+				bindings, 
+				add_element,
+				dragging,
+				end_drag,
+				drag_over,
+				drag_leave,
+				drop,
+				// closure variables
+				numbered,
+				$drag_container;
+
+			initialize = function( $container ) {
+				$drag_container = $container;
+				bindings();
+			};
+
+			bindings = function() {
+				var $add_box = $(".add-box");
+				$add_box.on( "click", function() {
+					add_element( $drag_container );
+				});
+
+				$(document).on( "dragstart", ".element", function( e ){
+					dragging( e );
+				});
+
+				$(document).on( "dragend", ".element", function( e ){
+					end_drag( $(e.target) );
+				});
+
+				$(document).on( "dragenter", ".element", function( e ){
+					e.preventDefault();
+					drag_over( $(e.target) );
+				});
+
+				$(document).on( "dragleave", ".element", function( e ) {
+					drag_leave( $(e.target) );
+				});
+
+				$(document).on( "dragover", ".element", function( e ) {
+					e.preventDefault();
+				});
+
+				$(document).on( "drop", ".element", function( e ){
+					e.preventDefault();
+					drop( $(e.target), e );
+				});
+			};
+
+			add_element = function( $container ){
+				var $div = $("<div/>").addClass("element").attr("draggable", true);
+				var $handle = $("<div/>").addClass("handle");
+				$div.append($handle);
+				$div.hide();
+				$container.prepend($div);
+				$div.fadeIn();
+			};
+
+			dragging = function( e ) {
+
+				$(e.target).addClass("dragging");
+			}
+
+			end_drag = function( $container ) {
+				$container.removeClass("dragging");
+			}
+
+			drag_over = function( $element ) {
+				$element.addClass("drag_over");
+			}
+
+			drag_leave = function( $element ) {
+				$element.removeClass("drag_over");
+			}
+
+			drop = function( $element, event ) {
+				debugger;
+				$element.append(event.dataTransfer.el);
+			}
+
+			return {
+				initialize: initialize
+			};
+		}(jQuery) );
+
+		$(function(){
+			drag_drop.initialize( $( ".container" ) );
+		});
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="http://meyerweb.com/eric/tools/css/reset/reset.css" media="screen" />
+
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.container {
+			margin: 5%;
+			background: gray;
+			width: 90%;
+			height: 300px;
+			overflow: hidden;
+		}
+
+		.element {
+			width: 100px;
+			margin: 1%;
+			height: 200px;
+			background: white;
+			float: left;
+		}
+
+		.element.dragging {
+			background: rgba(255,255,255,0.6);
+			border: 1px solid white;
+		}
+
+		.element.drag_over {
+			border: 1px dashed red;
+		}
+
+		.handle {
+			width: 10px;
+			height: 10px;
+			margin: 10px;
+			background: gray;
+			cursor: move;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+
+	</div>
+
+	<a href="#" class="add-box">Add Box +</a>
+</body>
+</html>

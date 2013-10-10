@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>drag and drop ui</title>
+	<script src="http://codeorigin.jquery.com/jquery-2.0.3.js"></script>
+	<script>
+		var drag_drop = ( function( $ ) {
+			var // functions
+				initialize, bindings, add_element, dragging, end_drag,
+				drag_over, drag_leave, drop, add_target_elements,
+				// closure variables
+				numbered = 0,
+				$drag_container,
+				$dragged_element,
+				$preceding_target,
+				$next_target;
+
+			initialize = function( $container ) {
+				$drag_container = $container;
+				bindings();
+			};
+
+			bindings = function() {
+				var $add_box = $(".add-box");
+				$add_box.on( "click", function() {
+					add_element( $drag_container );
+				});
+
+				$(document).on( "dragstart", ".element", function( e ){
+					dragging( e );
+				});
+
+				$(document).on( "dragend", ".element", function( e ){
+					end_drag( $(e.target) );
+				});
+
+				$(document).on( "dragenter", ".target", function( e ){
+					e.preventDefault();
+					drag_over( $(e.target) );
+				});
+
+				$(document).on( "dragleave", ".target", function( e ) {
+					drag_leave( $(e.target) );
+				});
+
+				$(document).on( "dragover", ".target", function( e ) {
+					e.preventDefault();
+				});
+
+				$(document).on( "drop", ".target", function( e ){
+					e.preventDefault();
+					drop( $(e.target), e );
+				});
+			};
+
+			add_element = function( $container ){
+				var $div = $("<div/>")
+					.addClass("element")
+					.attr("draggable", true);
+				var $handle = $("<div/>")
+					.addClass("handle")
+					.attr("draggable", false);
+				var $target = $("<div/>")
+					.addClass("target");
+				numbered += 1;
+				$div.append($handle).append(numbered);
+				$div.hide();
+				$container.append($div);
+				$container.append($target);
+				$div.fadeIn();
+			};
+
+			dragging = function( e ) {
+				$dragged_element = $(e.target);
+				$preceding_target = $dragged_element.prev();
+				$next_target = $dragged_element.next();
+				$dragged_element.addClass("dragging");
+			}
+
+			end_drag = function( $container ) {
+				$container.removeClass("dragging");
+			}
+
+			drag_over = function( $element ) {
+				$element.addClass("drag_over");
+			}
+
+			drag_leave = function( $element ) {
+				$element.removeClass("drag_over");
+			}
+
+			drop = function( $element, event ) {
+				$element.removeClass("drag_over");
+				if( $element.hasClass("target") && $element[0] != $preceding_target[0] && $element[0] != $next_target[0] ) {
+					$next_target.remove();
+					$element.replaceWith($dragged_element);
+					var $new_target = $("<div/>").addClass("target");
+					$new_target.insertBefore($dragged_element);
+					$new_target.clone().insertAfter($dragged_element);
+				}
+			}
+
+			return {
+				initialize: initialize
+			};
+		}(jQuery) );
+
+		$(function(){
+			drag_drop.initialize( $( ".container" ) );
+		});
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="http://meyerweb.com/eric/tools/css/reset/reset.css" media="screen" />
+
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		.container {
+			margin: 5%;
+			background: gray;
+			min-width: 600px;
+			height: 300px;
+			overflow: hidden;
+		}
+
+		.element {
+			width: 100px;
+			margin-top: 10px;
+			height: 200px;
+			background: white;
+			float: left;
+		}
+
+		.element.dragging {
+			background: rgba(255,255,255,0.6);
+			border: 1px solid white;
+		}
+
+		.handle {
+			width: 10px;
+			height: 10px;
+			margin: 10px;
+			background: gray;
+			cursor: move;
+		}
+
+		.target {
+			width: 10px;
+			height: 200px;
+			margin-top: 10px;
+			float: left;
+		}
+
+		.target.drag_over {
+			border: 1px dashed red;
+			width: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="target"></div>
+	</div>
+
+	<a href="#" class="add-box">Add Box +</a>
+	<h5>Resources</h5>
+	<ul>
+		<li><a href="http://www.html5rocks.com/en/tutorials/dnd/basics/">HTML5 Rocks - Native HTML5 Drag and Drop</a></li>
+	</ul>
+	<p>This was a kind of tough one to build. It actually would have probably been a lot harder had I not found out that
+	there's now an HTML5 spec for drag and drop events. It's now possible to add an attribute of "draggable" to an element
+	which gives you the basic ability to drag an element around. HTML5 provides event handlers for drop like "dragstart", 
+	"dragend", "drop", "dragover", "dragleave", and "dragenter", which give you enough to change element appearances when
+	you drag something over a dropzone, and call methods to append html data to the DOM element that you dragged an element
+	over. I approached it in a somewhat unorthodox manner with jQuery, keeping a reference to the currently dragged element
+	in the drag_drop closure, as well as some of the target drop zones on the left and right of the element being dragged.
+	Probably not actually the best way to do it, but I'll try to refine this in a later iteration of this same project. But
+	for now it's good enough. On to the next project
+	</p>
+</body>
+</html>

@@ -1,0 +1,87 @@
+@import "bourbon/bourbon";
+
+// variables
+$break-small: 786px;
+$max-size: 1024px;
+$gutters: 30px;
+
+* {
+	@include box-sizing(border-box);
+}
+
+// grid
+.row {
+	@include clearfix;
+	margin: 0 auto;
+
+	.row {
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+	}
+
+	.one, .two, .three, .four, 
+	.five, .six, .seven, .eight, 
+	.nine, .ten, .eleven, .twelve {
+		float: left;
+		padding: 0 $gutters;
+	}
+
+	@media screen and (min-width: $break-small) {
+		width: $max-size;
+		max-width: 100%;
+		min-width: $break-small;
+
+		.one {
+			width: 8.33%
+		}
+		.two {
+			width: 16.66%
+		}
+		.three {
+			width: 24.99%
+		}
+		.four {
+			width: 33.33%
+		}
+		.five {
+			width: 41.66%
+		}
+		.six {
+			width: 50%
+		}
+		.seven {
+			width: 58.33%
+		}
+		.eight {
+			width: 66.66%
+		}
+		.nine {
+			width: 74.99%
+		}
+		.ten {
+			width: 83.33%
+		}
+		.eleven {
+			width: 91.66%
+		}
+		.twelve {
+			width: 100%
+		}
+	}
+
+	@media screen and (max-width: $break-small) {
+		.one, .two, .three, .four, 
+		.five, .six, .seven, .eight, 
+		.nine, .ten, .eleven, .twelve {
+			width: 100%;
+		}
+	}
+
+	
+}
+
+// misc useful html classes (thanks foundation)
+.left { float: left !important; }
+.right { float: right !important; }
+.hide { display: none; }

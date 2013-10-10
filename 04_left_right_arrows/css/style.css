@@ -1,0 +1,60 @@
+body {
+  background: #fff; }
+
+.carousel .arrows {
+  font-family: "Krona One";
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 400;
+  color: white;
+  text-rendering: geometricPrecision;
+  position: relative; }
+  .carousel .arrows:before, .carousel .arrows:after {
+    content: attr(data-shadow);
+    position: absolute;
+    -webkit-transition: color 0.4s;
+    -moz-transition: color 0.4s;
+    transition: color 0.4s; }
+  .carousel .arrows:before {
+    top: .08em;
+    left: 0;
+    color: rgba(0, 0, 0, 0.4); }
+  .carousel .arrows:after {
+    top: .1em;
+    left: 0;
+    color: #F3F6F8; }
+  .carousel .arrows:hover:after {
+    color: #EEEEF0; }
+  .carousel .arrows:hover:before {
+    color: rgba(0, 0, 0, 0.6); }
+
+* {
+  font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 16px; }
+
+h1, h2, h3, h4, h5, h6 {
+  position: relative;
+  font-weight: 400;
+  margin-bottom: 15px; }
+
+p {
+  margin-bottom: 15px; }
+
+h1 {
+  font-size: 3em; }
+
+h2 {
+  font-size: 3em; }
+
+h3 {
+  font-size: 1.75em; }
+
+h4 {
+  font-size: 1.5em; }
+
+h5 {
+  font-size: 1.25em; }
+
+h6 {
+  font-size: 1.1em; }

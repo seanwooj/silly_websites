@@ -1,0 +1,70 @@
+@import "bourbon/bourbon";
+
+body {
+	background: #fff;
+}
+
+.carousel {
+	.arrows {
+		// this is actually the bottom highlight
+		font-family: "Krona One";
+		text-decoration: none;
+		font-size: 24px;
+		font-weight: 400;
+		color: rgba(255,255,255,1);
+		// best rendering option
+		text-rendering: geometricPrecision;
+		position: relative;
+		&:before, &:after {
+			content: attr(data-shadow);
+			position: absolute;
+			// animate the hover color
+			@include transition(color 0.4s);
+		}
+		&:before {
+			// this is the element that is the shadow
+			top: .08em;
+			left: 0;
+			color: rgba(0,0,0,0.4);
+		}
+		&:after {
+			// this is the element that has the actual real color.
+			top: .1em;
+			left: 0;
+			color: #F3F6F8;
+		}
+		&:hover {
+			&:after {
+				color: #EEEEF0;
+			}
+			&:before {
+				color: rgba(0,0,0,0.6);
+			}
+		}
+	}
+}
+
+// typography
+
+* {
+	font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	position: relative;
+	font-weight: 400;
+	margin-bottom: 15px;
+}
+
+p {
+	margin-bottom: 15px;
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 3em; }
+h3 { font-size: 1.75em; }
+h4 { font-size: 1.5em; }
+h5 { font-size: 1.25em; }
+h6 { font-size: 1.1em; }
